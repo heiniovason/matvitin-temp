@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fo">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Matvitin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box
+    }
+
+    [hidden] {
+      display: none !important
+    }
+
+    html,
+    body {
+      margin: 0;
+      background: #0b0b0a;
+      color: #f4f3ef;
+      font-family: 'IBM Plex Mono', monospace
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 72px 24px;
+      overflow: hidden
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(28px, 5vh, 48px);
+      text-align: center;
+      max-width: 560px;
+      width: 100%
+    }
+
+    .logo {
+      width: clamp(200px, min(36vw, 52vh), 560px);
+      height: auto;
+      display: block
+    }
+
+    .copy {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center
+    }
+
+    .copy p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #f4f3ef;
+      max-width: 380px;
+      text-wrap: pretty
+    }
+
+    form,
+    .thanks {
+      display: flex;
+      width: 100%;
+      max-width: 400px;
+      border-bottom: 1px solid #f4f3ef
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: 0;
+      outline: 0;
+      color: #f4f3ef;
+      font: 14px 'IBM Plex Mono', monospace;
+      padding: 12px 0
+    }
+
+    input::placeholder {
+      color: #f4f3ef
+    }
+
+    form button {
+      background: transparent;
+      border: 0;
+      color: #f4f3ef;
+      font: 13px 'IBM Plex Mono', monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 12px 0 12px 16px;
+      transition: letter-spacing .15s
+    }
+
+    form button:hover {
+      color: #fff;
+      letter-spacing: .2em
+    }
+
+    .thanks {
+      margin: 0;
+      font-size: 14px;
+      padding: 12px 0
+    }
+
+    .contact {
+      position: fixed;
+      top: 24px;
+      left: clamp(16px, 3vw, 48px);
+      font-size: 13px;
+      letter-spacing: .12em;
+      color: #f4f3ef;
+      text-decoration: none
+    }
+
+    .contact:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px
+    }
+
+    .lang {
+      position: fixed;
+      top: 20px;
+      right: clamp(16px, 3vw, 48px);
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      font-size: 12px;
+      letter-spacing: .12em;
+      color: #f4f3ef
+    }
+
+    .lang button {
+      background: transparent;
+      border: 0;
+      padding: 4px 2px;
+      cursor: pointer;
+      font: 12px 'IBM Plex Mono', monospace;
+      letter-spacing: .12em;
+      color: #f4f3ef;
+      text-underline-offset: 4px
+    }
+
+    .lang button[aria-pressed="true"] {
+      color: #f4f3ef;
+      text-decoration: underline
+    }
+
+    .lang button:hover {
+      color: #fff
+    }
+
+    .copyright {
+      position: fixed;
+      left: 24px;
+      bottom: 20px;
+      margin: 0;
+      font-size: 11px;
+      letter-spacing: .12em;
+      color: #f4f3ef
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <a class="contact" href="mailto:samband@matvitin.fo" data-t="contact"></a>
+    <div class="lang"><button data-lang="fo">FO</button><span>/</span><button data-lang="en">EN</button></div>
+    <main>
+      <img class="logo" src="./assets/matvitin_logo_white.png" alt="Matvitin">
+      <div class="copy">
+        <p data-t="body"></p>
+      </div>
+      <form id="nl"><input type="email" required data-t-placeholder="placeholder"><button type="submit"
+          data-t="button"></button></form>
+      <p class="thanks" id="thanks" hidden data-t="thanks"></p>
+    </main>
+    <p class="copyright">© 2026 MATVITIN</p>
+  </div>
+  <script>
+    const T = {
+      fo: { body: 'Vit eru í hálvt við alt møguligt gott. Millum annað eisini nýggja heimasíðu. Melda teg til tíðindaskriv okkara og fá at vita fyrst, tá nýggja síðan er klár.', placeholder: 'teldupostur@dømi.fo', button: 'Melda til →', thanks: 'Takk! Vit hoyrast.', contact: 'SAMBAND → samband@matvitin.fo' },
+      en: { body: "We're cooking up something good. Join the mailing list and be the first to know when it's ready.", placeholder: 'email@example.com', button: 'Sign up →', thanks: 'Thanks! Talk soon.', contact: 'CONTACT → samband@matvitin.fo' }
+    };
+    function setLang(l) {
+      document.documentElement.lang = l;
+      document.querySelectorAll('[data-t]').forEach(e => e.textContent = T[l][e.dataset.t]);
+      document.querySelectorAll('[data-t-placeholder]').forEach(e => e.placeholder = T[l][e.dataset.tPlaceholder]);
+      document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === l));
+    }
+    document.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => setLang(b.dataset.lang));
+    const ML_URL = 'https://assets.mailerlite.com/jsonp/ACCOUNT_ID/forms/FORM_ID/subscribe';
+    document.getElementById('nl').onsubmit = async e => {
+      e.preventDefault();
+      const f = e.target, btn = f.querySelector('button');
+      btn.disabled = true;
+      const body = new FormData();
+      body.append('fields[email]', f.querySelector('input').value);
+      body.append('ml-submit', '1');
+      body.append('anticsrf', 'true');
+      try {
+        const r = await fetch(ML_URL, { method: 'POST', body });
+        const j = await r.json();
+        if (!j.success) throw 0;
+        f.hidden = true; document.getElementById('thanks').hidden = false;
+      } catch {
+        btn.disabled = false; alert(document.documentElement.lang === 'fo' ? 'Okkurt gekk galið – royn aftur.' : 'Something went wrong – try again.');
+      }
+    };
+    setLang('fo');
+  </script>
+</body>
+
+</html>
